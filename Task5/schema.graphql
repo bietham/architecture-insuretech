@@ -1,0 +1,57 @@
+"""
+Task5 — GraphQL schema for client-info
+"""
+
+"""
+Root query entrypoints.
+Covers existing REST operations:
+- GET /clients/{id}
+- GET /clients/{id}/documents
+- GET /clients/{id}/relatives
+"""
+type Query {
+  """Equivalent to GET /clients/{id}"""
+  client(id: ID!): Client
+
+  """Equivalent to GET /clients/{id}/documents (convenience)"""
+  clientDocuments(clientId: ID!): [Document!]!
+
+  """Equivalent to GET /clients/{id}/relatives (convenience)"""
+  clientRelatives(clientId: ID!): [Relative!]!
+}
+
+"""
+Customer profile.
+GraphQL lets consumers select only required fields.
+"""
+type Client {
+  id: ID!
+  name: String
+  age: Int
+
+  """Client documents"""
+  documents: [Document!]!
+
+  """Client relatives"""
+  relatives: [Relative!]!
+}
+
+type Document {
+  id: ID!
+  type: String
+  number: String
+  issueDate: Date
+  expiryDate: Date
+}
+
+type Relative {
+  id: ID!
+  relationType: String
+  name: String
+  age: Int
+}
+
+"""
+ISO-8601 date string, e.g. 2026-02-23.
+"""
+scalar Date
